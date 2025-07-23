@@ -34,13 +34,22 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 
-// db.User = require("../models/user.model")(sequelize, DataTypes);
-// db.Timesheet = require("../models/timesheet.model")(sequelize, DataTypes);
-
 
 db.User = require("../models/user.model")(sequelize, DataTypes);
+db.Timesheet = require("../models/timesheets.model")(sequelize, DataTypes);
+db.TimeEntry = require("../models/time_entries.model")(sequelize, DataTypes);
 
+// One Timesheet has many TimeEntries
+db.Timesheet.hasMany(db.TimeEntry, {
+  foreignKey: "timesheet_id",
+  as: "entries",
+  onDelete: "CASCADE",
+});
 
+db.TimeEntry.belongsTo(db.Timesheet, {
+  foreignKey: "timesheet_id",
+  as: "timesheet",
+});
 
 
 
