@@ -38,6 +38,8 @@ db.sequelize = sequelize;
 db.User = require("../models/user.model")(sequelize, DataTypes);
 db.Timesheet = require("../models/timesheets.model")(sequelize, DataTypes);
 db.TimeEntry = require("../models/time_entries.model")(sequelize, DataTypes);
+db.UserRole = require("../models/user_roles.model")(sequelize, DataTypes);
+db.Employee = require("../models/employee.model")(sequelize, DataTypes);
 
 // One Timesheet has many TimeEntries
 db.Timesheet.hasMany(db.TimeEntry, {
@@ -49,6 +51,14 @@ db.Timesheet.hasMany(db.TimeEntry, {
 db.TimeEntry.belongsTo(db.Timesheet, {
   foreignKey: "timesheet_id",
   as: "timesheet",
+});
+
+db.UserRole.hasOne(db.Employee, {
+  foreignKey: "user_id",
+});
+
+db.Employee.belongsTo(db.UserRole, {
+  foreignKey: "user_id",
 });
 
 

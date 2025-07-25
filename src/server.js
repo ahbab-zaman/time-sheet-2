@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const app = require("./app");
 const configs = require('./config');
 require("./config/sequelize");
-// const db = require('./config/sequelize');
+const db = require('./config/sequelize');
 
 
 const PORT = configs.serverPort;
@@ -19,7 +19,7 @@ app.listen(PORT, async () => {
 
   // Uncomment the following line to sync the database models
   // await db.User.sync({ alter: true });
-  // await db.TimeEntry.sync({ alter: true });
+  await db.Employee.sync({ alter: true });
 })
 
 // Error handling for unhandled promise rejections and uncaught exceptions
