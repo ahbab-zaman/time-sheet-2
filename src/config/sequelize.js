@@ -1,57 +1,51 @@
-const {Sequelize, DataTypes} = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 const configs = require('./index');
 
-const sequelize = new Sequelize( 
-    configs.databaseName,
-    configs.databaseUsername,
-    configs.databasePassword, 
-    {
+const sequelize = new Sequelize(
+  configs.databaseName,
+  configs.databaseUsername,
+  configs.databasePassword,
+  {
     host: configs.databaseHost,
     dialect: "mysql",
     logging: false,
-    }
+  }
 );
 
-
 const connectDatabase = async () => {
-    try {
-  
-      await sequelize.authenticate();
-      console.log(
-        `Database connected successfully on ${configs.databaseName}`
-      );
-
-    } catch (error) {
-      console.error("Unable to connect to the database:", error);
-    }
-  };
-
+  try {
+    await sequelize.authenticate();
+    console.log(`Database connected successfully on ${configs.databaseName}`);
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
+};
 connectDatabase();
-
 
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-
-
+// Load models
 db.User = require("../models/user.model")(sequelize, DataTypes);
 db.Timesheet = require("../models/timesheets.model")(sequelize, DataTypes);
 db.TimeEntry = require("../models/time_entries.model")(sequelize, DataTypes);
 db.UserRole = require("../models/user_roles.model")(sequelize, DataTypes);
 db.Employee = require("../models/employee.model")(sequelize, DataTypes);
 
-// One Timesheet has many TimeEntries
+// Associations
 db.Timesheet.hasMany(db.TimeEntry, {
   foreignKey: "timesheet_id",
   as: "entries",
   onDelete: "CASCADE",
 });
-
 db.TimeEntry.belongsTo(db.Timesheet, {
   foreignKey: "timesheet_id",
   as: "timesheet",
 });
+
+db.User.hasMany(db.UserRole, { foreignKey: 'user_id' });
+db.UserRole.belongsTo(db.User, { foreignKey: 'user_id' });
 
 db.UserRole.hasOne(db.Employee, {
   foreignKey: "user_id",
@@ -60,8 +54,5 @@ db.UserRole.hasOne(db.Employee, {
 db.Employee.belongsTo(db.UserRole, {
   foreignKey: "user_id",
 });
-
-
-
 
 module.exports = db;

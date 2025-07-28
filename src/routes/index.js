@@ -1,12 +1,13 @@
 const express = require("express");
 const apiRouter = express.Router();
+const authRouter = require("./auth.routes");
 
 // Define your route configurations here
 const routers = [
-//   {
-//     path: "/auth",
-//     router: null, // replace with actual router when ready
-//   },
+  {
+    path: "/auth",
+    router: authRouter
+  },
 //   {
 //     path: "/users",
 //     router: null,

@@ -3,9 +3,9 @@
 module.exports = (sequelize, DataTypes) => {
   const Employee = sequelize.define("Employee", {
     id: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER.UNSIGNED,
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
+      autoIncrement: true,
     },
     employee_id: {
       type: DataTypes.STRING(50),
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     user_id: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
     },
     name: {

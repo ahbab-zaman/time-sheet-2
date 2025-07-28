@@ -18,8 +18,10 @@ app.listen(PORT, async () => {
   );
 
   // Uncomment the following line to sync the database models
+
   // await db.User.sync({ alter: true });
-  await db.Employee.sync({ alter: true });
+  // await db.UserRole.sync({ alter: true });
+  // await db.Employee.sync({ alter: true });
 })
 
 // Error handling for unhandled promise rejections and uncaught exceptions

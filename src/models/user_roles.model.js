@@ -1,26 +1,21 @@
-// models/user_roles.model.js
-
 module.exports = (sequelize, DataTypes) => {
   const UserRole = sequelize.define("UserRole", {
     id: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER.UNSIGNED,
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
+      autoIncrement: true,
     },
     user_id: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
+      unique: true,
+      references: {
+        model: "users",
+        key: "id"
+      }
     },
     role: {
       type: DataTypes.ENUM("Admin", "Manager", "Employee", "Finance"),
-      allowNull: false,
-    },
-    email: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    password: {
-      type: DataTypes.TEXT,
       allowNull: false,
     },
     isDeleted: {
@@ -31,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: "user_roles",
     timestamps: true,
     createdAt: 'created_at',
-    updatedAt: false, // only createdAt as per your schema
+    updatedAt: false,
   });
 
   return UserRole;
