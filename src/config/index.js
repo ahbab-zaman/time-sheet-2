@@ -1,7 +1,7 @@
 const configs = {
 
     nodeEnv: process.env.NODE_ENV || 'development',
-    serverPort: process.env.SERVER_PORT || 8080,
+    serverPort: process.env.SERVER_PORT || 1001,
 
     
     databasePort: process.env.DATABASE_PORT,

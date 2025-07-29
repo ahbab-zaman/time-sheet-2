@@ -8,6 +8,8 @@ const path = require("path");
 
 
 const app = express();
+console.log("✅ Express app initialized");
+
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
