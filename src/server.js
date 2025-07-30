@@ -3,7 +3,7 @@ const configs = require('./config');
 require("./config/sequelize");
 const db = require('./config/sequelize');
 
-const PORT = configs.serverPort || 1001;
+const PORT = configs.serverPort || 4001;
 const environment = configs.nodeEnv || 'development';
 
 app.listen(PORT, async () => {

@@ -1,5 +1,8 @@
-const { User } = require('../models/user.model');
-const {  UserRole } = require('../models/user_roles.model');
+// const { User } = require('../models/user.model');
+// const {  UserRole } = require('../models/user_roles.model');
+const db = require('../config/sequelize');
+const User = db.User;
+const UserRole = db.UserRole;
 const { hashPassword, comparePassword } = require('../utils/password');
 const { generateToken } = require('../utils/jwt');
 
