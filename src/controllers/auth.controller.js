@@ -16,7 +16,6 @@ exports.register = async (req, res) => {
   }
 };
 
-
 exports.login = async (req, res) => {
   try {
     const token = await AuthService.loginUser(req.body);
@@ -26,5 +25,34 @@ exports.login = async (req, res) => {
     });
   } catch (err) {
     res.status(401).json({ error: err.message });
+  }
+};
+
+exports.assignRole = async (req, res) => {
+  try {
+    const { userId, role } = req.body;
+    await AuthService.assignUserRole(userId, role);
+    res.status(200).json({ message: "Role assigned successfully" });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+exports.revokeRole = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    if (!userId) {
+      return res.status(400).json({ error: "userId is required" });
+    }
+
+    const result = await AuthService.revokeUserRole(userId);
+
+    if (!result) {
+      return res.status(404).json({ error: "No active role found for this user" });
+    }
+
+    res.status(200).json({ message: "User role revoked successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };

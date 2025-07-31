@@ -2,6 +2,9 @@ const express = require("express");
 const authController = require("../controllers/auth.controller");
 // const authValidators = require("../../validators/auth.validator");
 // const passport = require("../../configs/passport");
+const authenticate = require("../middlewares/authenticate");
+const authorizeRole = require("../middlewares/authorizeRole");
+const isAdmin = require("../middlewares/isAdmin");
 const authRouter = express.Router();
 
 authRouter.post(
@@ -15,5 +18,17 @@ authRouter.post("/login",
     authController.login
 );
 
+// Assign role — only accessible by Admin
+authRouter.post("/assign-role",
+  authenticate,
+  authorizeRole("Admin"),
+  authController.assignRole
+);
+
+authRouter.post("/revoke-role",
+  authenticate,
+  isAdmin,
+  authController.revokeRole
+);
 
 module.exports = authRouter;

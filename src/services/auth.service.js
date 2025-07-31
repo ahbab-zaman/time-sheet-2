@@ -1,5 +1,3 @@
-// const { User } = require('../models/user.model');
-// const {  UserRole } = require('../models/user_roles.model');
 const db = require('../config/sequelize');
 const User = db.User;
 const UserRole = db.UserRole;
@@ -34,4 +32,40 @@ exports.loginUser = async ({ email, password }) => {
   });
 
   return token;
+};
+
+exports.assignUserRole = async (userId, role) => {
+  const validRoles = ["Admin", "Manager", "Employee", "Finance"];
+  if (!validRoles.includes(role)) {
+    throw new Error("Invalid role");
+  }
+
+  const user = await User.findByPk(userId);
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  // If already has role, update it
+  const existing = await UserRole.findOne({
+    where: { user_id: userId, isDeleted: false },
+  });
+
+  if (existing) {
+    existing.role = role;
+    await existing.save();
+  } else {
+    await UserRole.create({ user_id: userId, role });
+  }
+};
+
+exports.revokeUserRole = async (userId) => {
+  const userRole = await UserRole.findOne({
+    where: { user_id: userId, isDeleted: false },
+  });
+
+  if (!userRole) return null;
+
+  userRole.isDeleted = true;
+  await userRole.save();
+  return true;
 };
