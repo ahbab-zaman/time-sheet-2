@@ -31,4 +31,22 @@ authRouter.post("/revoke-role",
   authController.revokeRole
 );
 
+authRouter.get("/users",
+  authenticate,
+  isAdmin,
+  authController.getAllUsers
+);
+
+authRouter.patch("/users/:id",
+  authenticate,
+  isAdmin,
+  authController.updateUser
+);
+
+authRouter.delete("/users/:id",
+  authenticate,
+  isAdmin,
+  authController.deleteUser
+);
+
 module.exports = authRouter;

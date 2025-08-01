@@ -69,3 +69,29 @@ exports.revokeUserRole = async (userId) => {
   await userRole.save();
   return true;
 };
+
+exports.fetchAllUsers = async () => {
+  return await User.findAll({
+    where: { isDeleted: false },
+    attributes: { exclude: ["password"] },
+    order: [["createdAt", "DESC"]],
+  });
+};
+
+exports.updateUser = async (userId, updates) => {
+  const user = await User.findOne({ where: { id: userId, isDeleted: false } });
+  if (!user) throw new Error("User not found");
+
+  const fieldsToUpdate = {};
+  if (updates.fullName) fieldsToUpdate.fullName = updates.fullName;
+  if (updates.email) fieldsToUpdate.email = updates.email;
+
+  await user.update(fieldsToUpdate);
+  return user;
+};
+
+exports.softDeleteUser = async (userId) => {
+  const user = await User.findOne({ where: { id: userId } });
+  if (!user) throw new Error("User not found");
+  await user.update({ isDeleted: true });
+};

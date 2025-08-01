@@ -56,3 +56,38 @@ exports.revokeRole = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await AuthService.fetchAllUsers();
+    res.json({ users });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+    const user = await AuthService.updateUser(id, updates);
+    
+    if (user && user.dataValues) {
+      delete user.dataValues.password;
+    }
+
+    res.json({ message: "User updated", user });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await AuthService.softDeleteUser(id);
+    res.json({ message: "User deleted successfully" });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
