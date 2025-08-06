@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const configs = require("../config");
+// const configs = require("../config");
 
 module.exports = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -15,6 +15,7 @@ module.exports = (req, res, next) => {
     req.user = decoded; // contains email and role
     next();
   } catch (err) {
+    console.log(err);
     return res.status(401).json({ error: "Invalid or expired token" });
   }
 };

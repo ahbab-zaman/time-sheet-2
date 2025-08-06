@@ -2,6 +2,7 @@ const express = require("express");
 const apiRouter = express.Router();
 const authRouter = require("./auth.routes");
 const employeeRouter = require("./employee.routes");
+const taskRouter = require("./task.routes");
 
 // Define your route configurations here
 const routers = [
@@ -9,9 +10,13 @@ const routers = [
     path: "/auth",
     router: authRouter
   },
-    {
+  {
     path: "/employee",
     router: employeeRouter
+  },
+  {
+    path: "/task",
+    router: taskRouter
   }
 ];
 
