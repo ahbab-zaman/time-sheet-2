@@ -31,3 +31,36 @@ exports.createTask = async (taskData) => {
 
   return newTask;
 };
+
+exports.getTasks = async (page = 1) => {
+  const limit = 10;
+  const offset = (page - 1) * limit;
+
+  const { count, rows } = await Task.findAndCountAll({
+    limit,
+    offset,
+    order: [['created_at', 'DESC']],
+  });
+
+  return {
+    total: count,
+    page,
+    pageSize: limit,
+    tasks: rows,
+  };
+};
+
+exports.updateTask = async (taskId, updatedData) => {
+  const task = await Task.findByPk(taskId);
+  if (!task) throw new Error("Task not found");
+
+  await task.update(updatedData);
+  return task;
+};
+
+exports.deleteTask = async (taskId) => {
+  const task = await Task.findByPk(taskId);
+  if (!task) throw new Error("Task not found");
+
+  await task.destroy();
+};

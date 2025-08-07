@@ -12,5 +12,23 @@ taskRouter.post(
   taskController.createTask
 );
 
+taskRouter.get(
+  "/",
+  authenticate,
+  taskController.getTasks
+);
+
+taskRouter.patch(
+  "/:id",
+  authenticate,
+  taskController.updateTask
+);
+
+taskRouter.delete(
+  "/:id",
+  authenticate,
+  taskController.deleteTask
+);
+
 
 module.exports = taskRouter;
