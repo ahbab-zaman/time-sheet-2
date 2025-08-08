@@ -9,7 +9,7 @@ const environment = configs.nodeEnv || 'development';
 app.listen(PORT, async () => {
   try {
     console.log(`Server is alive on PORT:${PORT} in ${environment} environment`);
-    //  await db.Task.sync({ alter: true });
+    //  await db.Leave.sync({ alter: true });
   } catch (err) {
     console.error("❌ Error during startup:", err);
     process.exit(1);

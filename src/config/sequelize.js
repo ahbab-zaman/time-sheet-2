@@ -33,6 +33,7 @@ db.TimeEntry = require("../models/time_entries.model")(sequelize, DataTypes);
 db.UserRole = require("../models/user_roles.model")(sequelize, DataTypes);
 db.Employee = require("../models/employee.model")(sequelize, DataTypes);
 db.Task = require("../models/task.model")(sequelize, DataTypes);
+db.Leave = require("../models/leave.model")(sequelize, DataTypes);
 
 
 // Associations
