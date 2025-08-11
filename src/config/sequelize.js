@@ -70,7 +70,6 @@ db.Task.belongsTo(db.Employee, {
   as: "employee",
 });
 
-//upcoming...
 
 db.Project.hasMany(db.Task, {
   foreignKey: "project_id",
