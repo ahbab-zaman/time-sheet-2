@@ -34,6 +34,7 @@ db.UserRole = require("../models/user_roles.model")(sequelize, DataTypes);
 db.Employee = require("../models/employee.model")(sequelize, DataTypes);
 db.Task = require("../models/task.model")(sequelize, DataTypes);
 db.Leave = require("../models/leave.model")(sequelize, DataTypes);
+db.Project = require("../models/project.model")(sequelize, DataTypes);  
 
 
 // Associations
@@ -71,17 +72,15 @@ db.Task.belongsTo(db.Employee, {
 
 //upcoming...
 
-// db.Project = require("../models/project.model")(sequelize, DataTypes);  
+db.Project.hasMany(db.Task, {
+  foreignKey: "project_id",
+  as: "tasks",
+  onDelete: "SET NULL",   
+});
 
-// db.Project.hasMany(db.Task, {
-//   foreignKey: "project_id",
-//   as: "tasks",
-//   onDelete: "SET NULL",   
-// });
-
-// db.Task.belongsTo(db.Project, {
-//   foreignKey: "project_id",
-//   as: "project",
-// });
+db.Task.belongsTo(db.Project, {
+  foreignKey: "project_id",
+  as: "project",
+});
 
 module.exports = db;

@@ -4,6 +4,7 @@ const authRouter = require("./auth.routes");
 const employeeRouter = require("./employee.routes");
 const taskRouter = require("./task.routes");
 const leaveRouter = require("./leave.routes");
+const projectRouter = require("./project.routes");
 
 // Define your route configurations here
 const routers = [
@@ -22,6 +23,10 @@ const routers = [
   {
     path: "/leave",
     router: leaveRouter
+  },
+  {
+    path: "/project",
+    router: projectRouter
   }
 ];
 
