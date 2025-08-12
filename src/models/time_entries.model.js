@@ -15,14 +15,32 @@ module.exports = (sequelize) => {
       type: DataTypes.DATEONLY,
       allowNull: false,
     },
+    clock_in: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    clock_out: {
+      type: DataTypes.DATE,
+      allowNull: true, // null means user is currently clocked in
+    },
     hours: {
       type: DataTypes.NUMERIC,
-      allowNull: false,
+      allowNull: true,
     },
     description: {
       type: DataTypes.TEXT,
       allowNull: true,
     },
+task_id: {
+  type: DataTypes.INTEGER.UNSIGNED,
+  allowNull: false,
+  references: {
+    model: 'tasks',
+    key: 'id',
+  },
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+}
   }, {
     tableName: "time_entries",
     timestamps: true, // createdAt and updatedAt

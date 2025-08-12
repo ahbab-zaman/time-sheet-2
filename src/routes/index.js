@@ -5,6 +5,8 @@ const employeeRouter = require("./employee.routes");
 const taskRouter = require("./task.routes");
 const leaveRouter = require("./leave.routes");
 const projectRouter = require("./project.routes");
+const timeRouter = require("./time.routes");
+
 
 // Define your route configurations here
 const routers = [
@@ -27,6 +29,10 @@ const routers = [
   {
     path: "/project",
     router: projectRouter
+  },
+    {
+    path: "/time",
+    router: timeRouter
   }
 ];
 

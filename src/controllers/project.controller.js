@@ -11,8 +11,7 @@ exports.createProject = async (req, res) => {
 
 exports.getAllProjects = async (req, res) => {
   try {
-    const { page = 1, limit = 10 } = req.query;
-    const result = await projectService.getAllProjects(page, limit);
+    const result = await projectService.getAllProjects();
     res.json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });

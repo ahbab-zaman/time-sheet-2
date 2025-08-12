@@ -5,10 +5,16 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    project_id: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: false,
-    },
+  project_id: {
+  type: DataTypes.INTEGER.UNSIGNED,
+  allowNull: false,  // stays NOT NULL if you want
+  references: {
+    model: 'projects',
+    key: 'id',
+  },
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+  },
     employee_id: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,

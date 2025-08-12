@@ -82,4 +82,29 @@ db.Task.belongsTo(db.Project, {
   as: "project",
 });
 
+//new....
+
+// Link timesheets to employees
+db.Employee.hasMany(db.Timesheet, {
+  foreignKey: "employee_id",
+  as: "timesheets",
+  onDelete: "CASCADE",
+});
+db.Timesheet.belongsTo(db.Employee, {
+  foreignKey: "employee_id",
+  as: "employee",
+});
+
+// Link time entries to tasks
+db.Task.hasMany(db.TimeEntry, {
+  foreignKey: "task_id",
+  as: "timeEntries",
+  onDelete: "CASCADE",
+});
+db.TimeEntry.belongsTo(db.Task, {
+  foreignKey: "task_id",
+  as: "task",
+});
+
+
 module.exports = db;

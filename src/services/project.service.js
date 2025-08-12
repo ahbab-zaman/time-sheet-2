@@ -5,17 +5,11 @@ exports.createProject = async (data) => {
   return await Project.create(data);
 };
 
-exports.getAllProjects = async (page, limit) => {
-  const offset = (page - 1) * limit;
-  const { count, rows } = await Project.findAndCountAll({
-    offset,
-    limit: parseInt(limit),
-  });
+exports.getAllProjects = async () => {
+  const projects = await Project.findAll();
   return {
-    total: count,
-    page: parseInt(page),
-    limit: parseInt(limit),
-    projects: rows,
+    total: projects.length,
+    projects,
   };
 };
 
