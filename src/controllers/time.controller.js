@@ -2,8 +2,8 @@ const timeService = require('../services/time.service');
 
 exports.clockIn = async (req, res) => {
   try {
-    const { employee_id, task_id, description } = req.body;
-    const newEntry = await timeService.clockIn(employee_id, task_id, description);
+    const { project_id, employee_id, task_id, description } = req.body;
+    const newEntry = await timeService.clockIn(project_id, employee_id, task_id, description);
     res.status(201).json(newEntry);
   } catch (error) {
     res.status(400).json({ error: error.message });

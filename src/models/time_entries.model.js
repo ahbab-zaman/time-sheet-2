@@ -31,7 +31,7 @@ module.exports = (sequelize) => {
       type: DataTypes.TEXT,
       allowNull: true,
     },
-task_id: {
+  task_id: {
   type: DataTypes.INTEGER.UNSIGNED,
   allowNull: false,
   references: {
@@ -40,7 +40,17 @@ task_id: {
   },
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
-}
+  },
+  project_id: {
+  type: DataTypes.INTEGER.UNSIGNED,
+  allowNull: false,
+  references: {
+    model: 'projects',
+    key: 'id',
+  },
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+  }
   }, {
     tableName: "time_entries",
     timestamps: true, // createdAt and updatedAt
