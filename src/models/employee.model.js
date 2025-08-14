@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     employee_id: {
       type: DataTypes.STRING(50),
       unique: true,
-      allowNull: false,
+      allowNull: true,
     },
     user_id: {
       type: DataTypes.INTEGER.UNSIGNED,
