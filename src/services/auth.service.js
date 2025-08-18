@@ -1,12 +1,12 @@
-const db = require('../config/sequelize');
+const db = require("../config/sequelize");
 const User = db.User;
 const UserRole = db.UserRole;
-const { hashPassword, comparePassword } = require('../utils/password');
-const { generateToken } = require('../utils/jwt');
+const { hashPassword, comparePassword } = require("../utils/password");
+const { generateToken } = require("../utils/jwt");
 
 exports.registerUser = async ({ fullName, email, password }) => {
   const existing = await User.findOne({ where: { email } });
-  if (existing) throw new Error('Email already in use');
+  if (existing) throw new Error("Email already in use");
 
   const hashed = await hashPassword(password);
   const user = await User.create({ fullName, email, password: hashed });
@@ -17,10 +17,10 @@ exports.registerUser = async ({ fullName, email, password }) => {
 
 exports.loginUser = async ({ email, password }) => {
   const user = await User.findOne({ where: { email } });
-  if (!user) throw new Error('Invalid email or password');
+  if (!user) throw new Error("Invalid email or password");
 
   const match = await comparePassword(password, user.password);
-  if (!match) throw new Error('Invalid email or password');
+  if (!match) throw new Error("Invalid email or password");
 
   const userRole = await UserRole.findOne({
     where: { user_id: user.id, isDeleted: false },

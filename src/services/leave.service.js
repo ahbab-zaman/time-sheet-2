@@ -5,7 +5,6 @@ exports.createLeave = async (leaveData) => {
   return await Leave.create(leaveData);
 };
 
-
 exports.getAllLeaves = async (page = 1, limit = 10) => {
   const offset = (page - 1) * limit;
   return await Leave.findAndCountAll({
