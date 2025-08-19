@@ -1,5 +1,5 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const configs = require('./index');
+const { Sequelize, DataTypes } = require("sequelize");
+const configs = require("./index");
 
 const sequelize = new Sequelize(
   configs.databaseName,
@@ -34,8 +34,11 @@ db.UserRole = require("../models/user_roles.model")(sequelize, DataTypes);
 db.Employee = require("../models/employee.model")(sequelize, DataTypes);
 db.Task = require("../models/task.model")(sequelize, DataTypes);
 db.Leave = require("../models/leave.model")(sequelize, DataTypes);
-db.Project = require("../models/project.model")(sequelize, DataTypes);  
-
+db.Project = require("../models/project.model")(sequelize, DataTypes);
+db.FinanceSummary = require("../models/financeSummary.model")(
+  sequelize,
+  DataTypes
+);
 
 // Associations
 db.Timesheet.hasMany(db.TimeEntry, {
@@ -48,8 +51,8 @@ db.TimeEntry.belongsTo(db.Timesheet, {
   as: "timesheet",
 });
 
-db.User.hasMany(db.UserRole, { foreignKey: 'user_id' });
-db.UserRole.belongsTo(db.User, { foreignKey: 'user_id' });
+db.User.hasMany(db.UserRole, { foreignKey: "user_id" });
+db.UserRole.belongsTo(db.User, { foreignKey: "user_id" });
 
 db.UserRole.hasOne(db.Employee, {
   foreignKey: "user_id",
@@ -70,11 +73,10 @@ db.Task.belongsTo(db.Employee, {
   as: "employee",
 });
 
-
 db.Project.hasMany(db.Task, {
   foreignKey: "project_id",
   as: "tasks",
-  onDelete: "SET NULL",   
+  onDelete: "SET NULL",
 });
 
 db.Task.belongsTo(db.Project, {
@@ -105,6 +107,5 @@ db.TimeEntry.belongsTo(db.Task, {
   foreignKey: "task_id",
   as: "task",
 });
-
 
 module.exports = db;
