@@ -25,7 +25,11 @@ exports.importSummary = async (req, res) => {
 
 exports.exportSummary = async (req, res) => {
   try {
-    const summaries = await FinanceSummaryService.getSummaries();
+    const { employee_name, status } = req.query;
+    const summaries = await FinanceSummaryService.getSummaries({
+      employee_name,
+      status,
+    });
 
     let csv =
       "Employee Name,Employee ID,Email,Project,Hours,Rate per Hour,Amount,Status\n";
@@ -44,7 +48,11 @@ exports.exportSummary = async (req, res) => {
 
 exports.getSummaries = async (req, res) => {
   try {
-    const summaries = await FinanceSummaryService.getSummaries();
+    const { employee_name, status } = req.query;
+    const summaries = await FinanceSummaryService.getSummaries({
+      employee_name,
+      status,
+    });
     res.status(200).json(summaries);
   } catch (error) {
     console.error("Error fetching summaries:", error);

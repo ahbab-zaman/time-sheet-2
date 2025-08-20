@@ -1,8 +1,22 @@
 const db = require("../config/sequelize");
 const FinanceSummary = db.FinanceSummary;
 
-exports.getSummaries = async () => {
-  const summaries = await FinanceSummary.findAll({
+exports.getSummaries = async (query = {}) => {
+  const { employee_name, status } = query;
+  const where = {};
+
+  if (employee_name) {
+    where.employee_name = {
+      [db.Sequelize.Op.like]: `%${employee_name}%`,
+    };
+  }
+
+  if (status && status !== "all") {
+    where.status = status;
+  }
+
+  const summaries = await db.FinanceSummary.findAll({
+    where,
     order: [["id", "ASC"]],
   });
   return summaries;
