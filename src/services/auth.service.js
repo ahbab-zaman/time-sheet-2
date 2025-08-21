@@ -73,6 +73,12 @@ exports.revokeUserRole = async (userId) => {
 exports.fetchAllUsers = async () => {
   return await User.findAll({
     where: { isDeleted: false },
+    include: [
+      {
+        model: UserRole,
+        attributes: ["role"],
+      },
+    ],
     attributes: { exclude: ["password"] },
     order: [["createdAt", "DESC"]],
   });

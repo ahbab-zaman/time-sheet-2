@@ -37,3 +37,17 @@ exports.saveSummaries = async (data) => {
     });
   }
 };
+
+exports.updatePaymentStatus = async (employeeId) => {
+  const summary = await FinanceSummary.findOne({
+    where: { employee_id: employeeId },
+  });
+
+  if (!summary) {
+    throw new Error("Finance summary not found");
+  }
+
+  summary.status = "Paid";
+  await summary.save();
+  return summary;
+};

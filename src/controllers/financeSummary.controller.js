@@ -1,4 +1,5 @@
 const FinanceSummaryService = require("../services/financeSummary.service");
+const FinanceSummary = require("../models/financeSummary.model");
 const csv = require("csv-parser");
 const fs = require("fs");
 
@@ -57,5 +58,33 @@ exports.getSummaries = async (req, res) => {
   } catch (error) {
     console.error("Error fetching summaries:", error);
     res.status(500).json({ error: "Failed to fetch summaries" });
+  }
+};
+
+exports.releasePayment = async (req, res) => {
+  try {
+    const { employee_id } = req.params;
+
+    // Validate employee_id
+    if (!employee_id) {
+      return res.status(400).json({ message: "Employee ID is required" });
+    }
+
+    if (typeof employee_id !== "string" || employee_id.trim() === "") {
+      return res.status(400).json({ message: "Invalid employee ID format" });
+    }
+
+    // Use the service function
+    await FinanceSummaryService.updatePaymentStatus(employee_id);
+
+    res.status(200).json({
+      success: true,
+      message: `Payment released for employee ${employee_id}`,
+    });
+  } catch (error) {
+    console.error("Error releasing payment:", error.message, error.stack);
+    res.status(500).json({
+      message: `Failed to release payment: ${error.message}`,
+    });
   }
 };
