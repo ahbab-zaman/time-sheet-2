@@ -6,38 +6,42 @@ const taskRouter = require("./task.routes");
 const leaveRouter = require("./leave.routes");
 const projectRouter = require("./project.routes");
 const timeRouter = require("./time.routes");
-const summaryRouter = require("./financeSummary.routes")
-
+const summaryRouter = require("./financeSummary.routes");
+const bonusRouter = require("../routes/bonus.route");
 // Define your route configurations here
 const routers = [
   {
     path: "/auth",
-    router: authRouter
+    router: authRouter,
   },
   {
     path: "/employee",
-    router: employeeRouter
+    router: employeeRouter,
   },
   {
     path: "/task",
-    router: taskRouter
+    router: taskRouter,
   },
   {
     path: "/leave",
-    router: leaveRouter
+    router: leaveRouter,
   },
   {
     path: "/project",
-    router: projectRouter
-  },
-    {
-    path: "/time",
-    router: timeRouter
+    router: projectRouter,
   },
   {
-    path : "/summary",
-    router : summaryRouter
-  }
+    path: "/time",
+    router: timeRouter,
+  },
+  {
+    path: "/summary",
+    router: summaryRouter,
+  },
+  {
+    path: "/bonus",
+    router: bonusRouter,
+  },
 ];
 
 // Loop through and attach when available
