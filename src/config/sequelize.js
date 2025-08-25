@@ -40,6 +40,7 @@ db.FinanceSummary = require("../models/financeSummary.model")(
   DataTypes
 );
 db.Bonus = require("../models/bonus.model")(sequelize, DataTypes);
+db.BankDetails = require("../models/bankDetails.model")(sequelize, DataTypes);
 
 // Associations
 db.Timesheet.hasMany(db.TimeEntry, {

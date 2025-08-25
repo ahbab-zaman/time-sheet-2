@@ -8,6 +8,7 @@ const projectRouter = require("./project.routes");
 const timeRouter = require("./time.routes");
 const summaryRouter = require("./financeSummary.routes");
 const bonusRouter = require("../routes/bonus.route");
+const bankDetails = require("../routes/bankDetails.routes");
 // Define your route configurations here
 const routers = [
   {
@@ -41,6 +42,10 @@ const routers = [
   {
     path: "/bonus",
     router: bonusRouter,
+  },
+  {
+    path: "/bank-details",
+    router: bankDetails,
   },
 ];
 
