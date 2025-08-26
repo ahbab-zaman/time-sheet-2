@@ -8,7 +8,6 @@ exports.addBankDetails = async (req, res) => {
       "employee_id",
       "bank_name",
       "account_number",
-      "ifsc_code",
       "account_holder_name",
     ];
     for (let field of requiredFields) {

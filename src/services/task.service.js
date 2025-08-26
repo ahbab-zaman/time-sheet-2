@@ -1,6 +1,5 @@
 const db = require('../config/sequelize');
 const Task = db.Task;
-// const { Op } = require('sequelize');
 
 
 exports.createTask = async (taskData) => {
