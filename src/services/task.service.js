@@ -1,6 +1,5 @@
-const db = require('../config/sequelize');
+const db = require("../config/sequelize");
 const Task = db.Task;
-
 
 exports.createTask = async (taskData) => {
   const {
@@ -11,11 +10,13 @@ exports.createTask = async (taskData) => {
     estimated_hours,
     start_date,
     due_date,
+    project_type,
+    milestone_description,
   } = taskData;
 
   // Optional: validate required fields
-  if (!employee_id || !title) {
-    throw new Error("employee_id and title are required");
+  if (!project_id || !employee_id || !title) {
+    throw new Error("project_id, employee_id, and title are required");
   }
 
   const newTask = await Task.create({
@@ -26,6 +27,8 @@ exports.createTask = async (taskData) => {
     estimated_hours,
     start_date,
     due_date,
+    project_type,
+    milestone_description,
   });
 
   return newTask;
@@ -38,7 +41,19 @@ exports.getTasks = async (page = 1) => {
   const { count, rows } = await Task.findAndCountAll({
     limit,
     offset,
-    order: [['created_at', 'DESC']],
+    order: [["created_at", "DESC"]],
+    include: [
+      {
+        model: db.Project,
+        attributes: ["id", "name"],
+        as: "project",
+      },
+      {
+        model: db.Employee,
+        attributes: ["id", "name"],
+        as: "employee",
+      },
+    ],
   });
 
   return {
