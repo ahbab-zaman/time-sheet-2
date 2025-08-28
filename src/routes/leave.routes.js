@@ -5,7 +5,6 @@ const authenticate = require("../middlewares/authenticate");
 const leaveRouter = express.Router();
 
 
-
 leaveRouter.post(
   "/create",
   authenticate,

@@ -10,7 +10,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     leaveType: {
-      type: DataTypes.ENUM("Casual Leave", "Sick Leave", "Earned Leave", "Maternity Leave", "Paternity Leave", "Other"),
+      type: DataTypes.ENUM(
+        "Casual Leave",
+        "Sick Leave",
+        "Earned Leave",
+        "Maternity Leave",
+        "Paternity Leave",
+        "Other"
+      ),
       allowNull: false,
     },
     fromDate: {
@@ -36,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
     createdBy: {
       type: DataTypes.INTEGER.UNSIGNED, // userId of the employee
       allowNull: false,
+    },
+    remarks: {
+      type: DataTypes.TEXT,
+      allowNull: true,
     },
   });
 

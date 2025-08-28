@@ -2,10 +2,27 @@ const leaveService = require("../services/leave.service");
 
 exports.createLeave = async (req, res) => {
   try {
-    const { employeeName, leaveType, fromDate, toDate, reason, attachment, createdBy } = req.body;
+    const {
+      employeeName,
+      leaveType,
+      fromDate,
+      toDate,
+      reason,
+      attachment,
+      createdBy,
+    } = req.body;
 
-    if (!employeeName || !leaveType || !fromDate || !toDate || !reason || !createdBy) {
-      return res.status(400).json({ message: "All required fields must be provided." });
+    if (
+      !employeeName ||
+      !leaveType ||
+      !fromDate ||
+      !toDate ||
+      !reason ||
+      !createdBy
+    ) {
+      return res
+        .status(400)
+        .json({ message: "All required fields must be provided." });
     }
 
     const leave = await leaveService.createLeave({
@@ -15,7 +32,7 @@ exports.createLeave = async (req, res) => {
       toDate,
       reason,
       attachment: attachment || null,
-      createdBy // from auth middleware
+      createdBy,
     });
 
     return res.status(201).json({
@@ -32,8 +49,15 @@ exports.getAllLeaves = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
+    const createdBy = req.query.createdBy
+      ? parseInt(req.query.createdBy)
+      : null;
 
-    const { count, rows } = await leaveService.getAllLeaves(page, limit);
+    const { count, rows } = await leaveService.getAllLeaves(
+      page,
+      limit,
+      createdBy
+    );
 
     res.status(200).json({
       total: count,
@@ -42,7 +66,9 @@ exports.getAllLeaves = async (req, res) => {
       leaves: rows,
     });
   } catch (error) {
-    res.status(500).json({ message: "Failed to fetch leaves", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to fetch leaves", error: error.message });
   }
 };
 
@@ -55,9 +81,13 @@ exports.updateLeave = async (req, res) => {
       return res.status(404).json({ message: "Leave not found" });
     }
 
-    res.status(200).json({ message: "Leave updated successfully", leave: updated });
+    res
+      .status(200)
+      .json({ message: "Leave updated successfully", leave: updated });
   } catch (error) {
-    res.status(500).json({ message: "Failed to update leave", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to update leave", error: error.message });
   }
 };
 
@@ -72,7 +102,8 @@ exports.deleteLeave = async (req, res) => {
 
     res.status(200).json({ message: "Leave deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Failed to delete leave", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to delete leave", error: error.message });
   }
 };
-
