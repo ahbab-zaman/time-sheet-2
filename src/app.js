@@ -13,7 +13,6 @@ console.log("✅ Express app initialized");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-
 const corsOptions = {
   origin:
     process.env.NODE_ENV === "production"
@@ -32,6 +31,13 @@ app.get("/", (req, res) => {
   res.send({
     message: "Welcome to the Timesheet API",
     status: "success",
+  });
+});
+
+app.get("/test", (req, res) => {
+  res.send({
+    message: "Testing the timesheet",
+    status: "Success",
   });
 });
 
