@@ -13,16 +13,20 @@ console.log("✅ Express app initialized");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-const corsOptions = {
-  origin:
-    process.env.NODE_ENV === "production"
-      ? process.env.ALLOWED_ORIGINS?.split(",") || []
-      : ["http://localhost:5173", "http://localhost:5174"],
-  credentials: true,
-  optionsSuccessStatus: 200,
-};
+// const corsOptions = {
+//   origin:
+//     process.env.NODE_ENV === "production"
+//       ? process.env.ALLOWED_ORIGINS?.split(",") || []
+//       : ["http://localhost:5173", "http://localhost:5174"],
+//   credentials: true,
+//   optionsSuccessStatus: 200,
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+
+
+
+app.use(cors())
 
 // ✅ Use this instead of body-parser
 app.use(express.json({ limit: "20mb" }));
