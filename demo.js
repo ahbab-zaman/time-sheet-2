@@ -13,14 +13,6 @@ console.log("✅ Express app initialized");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-const allowedOrigins = [
-  "http://timesheet.airepro.in",
-  "http://localhost:5173",
-  "http://localhost:5174",
-];
-
-app.set("trust proxy", true);
-
 // const corsOptions = {
 //   origin:
 //     process.env.NODE_ENV === "production"
@@ -30,33 +22,16 @@ app.set("trust proxy", true);
 //   optionsSuccessStatus: 200,
 // };
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin) {
-      // Allow requests with no origin (like curl, Postman, server-to-server)
-      return callback(null, true);
-    }
+// app.use(cors(corsOptions));
 
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
 
-    // Allow same-machine local IP access for health checks or testing
-    if (/^http:\/\/(localhost|127\.0\.0\.1)/.test(origin)) {
-      return callback(null, true);
-    }
 
-    callback(new Error("Not allowed by CORS"));
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
+app.use(cors())
 
 // ✅ Use this instead of body-parser
 app.use(express.json({ limit: "20mb" }));
 
-app.get("/", cors(), (req, res) => {
+app.get("/", (req, res) => {
   res.send({
     message: "Welcome to the Timesheet API",
     status: "success",
@@ -70,7 +45,7 @@ app.get("/test", (req, res) => {
   });
 });
 
-app.use("/api/v1", cors(corsOptions), apiRouter);
+app.use("/api/v1", apiRouter);
 app.all(/.*/, notFoundHandler);
 app.use(globalErrorHandler);
 
