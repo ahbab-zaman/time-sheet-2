@@ -6,18 +6,16 @@ const db = require("./config/sequelize");
 const PORT = configs.serverPort || 4001;
 const environment = configs.nodeEnv || "development";
 
-// app.listen(PORT, async () => {
-//   try {
-//     console.log(`Server is alive on PORT:${PORT} in ${environment} environment`);
-//     //  await db.TimeEntry.sync({ alter: true });
-//   } catch (err) {
-//     console.error("❌ Error during startup:", err);
-//     process.exit(1);
-//   }
-// });
-
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(PORT, async () => {
+  try {
+    console.log(
+      `Server is alive on PORT:${PORT} in ${environment} environment`
+    );
+    //  await db.TimeEntry.sync({ alter: true });
+  } catch (err) {
+    console.error("❌ Error during startup:", err);
+    process.exit(1);
+  }
 });
 
 process.on("exit", (code) => {

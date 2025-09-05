@@ -47,17 +47,32 @@ exports.getActiveEntry = async (req, res) => {
 exports.getTimesheet = async (req, res) => {
   try {
     const { employee_id, week_start, week_end } = req.query;
-    if (!employee_id || !week_start || !week_end) {
-      return res
-        .status(400)
-        .json({ error: "employee_id, week_start, and week_end are required" });
+    if (!employee_id) {
+      return res.status(400).json({ error: "employee_id is required" });
     }
+
+    if (!week_start || !week_end) {
+      const { weekStart, weekEnd } = getWeekRange(new Date());
+      week_start = week_start || weekStart;
+      week_end = week_end || weekEnd;
+    }
+
     const timesheet = await timeService.getTimesheetForWeek(
       employee_id,
       week_start,
       week_end
     );
     res.json(timesheet);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.getAllEmployeesTimesheets = async (req, res) => {
+  try {
+    const { status } = req.query;
+    const timesheets = await timeService.getAllEmployeesTimesheets(status);
+    res.json(timesheets);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -79,16 +94,10 @@ exports.submitTimesheet = async (req, res) => {
 exports.approveTimesheet = async (req, res) => {
   try {
     const { timesheet_id } = req.params;
-    const { admin_id } = req.body;
-    if (!timesheet_id || !admin_id) {
-      return res
-        .status(400)
-        .json({ error: "timesheet_id and admin_id are required" });
+    if (!timesheet_id) {
+      return res.status(400).json({ error: "timesheet_id is required" });
     }
-    const timesheet = await timeService.approveTimesheet(
-      timesheet_id,
-      admin_id
-    );
+    const timesheet = await timeService.approveTimesheet(timesheet_id);
     res.json({ message: "Timesheet approved", data: timesheet });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -98,17 +107,11 @@ exports.approveTimesheet = async (req, res) => {
 exports.rejectTimesheet = async (req, res) => {
   try {
     const { timesheet_id } = req.params;
-    const { admin_id, remarks } = req.body;
-    if (!timesheet_id || !admin_id) {
-      return res
-        .status(400)
-        .json({ error: "timesheet_id and admin_id are required" });
+    const { remarks } = req.body;
+    if (!timesheet_id) {
+      return res.status(400).json({ error: "timesheet_id is required" });
     }
-    const timesheet = await timeService.rejectTimesheet(
-      timesheet_id,
-      admin_id,
-      remarks
-    );
+    const timesheet = await timeService.rejectTimesheet(timesheet_id, remarks);
     res.json({ message: "Timesheet rejected", data: timesheet });
   } catch (error) {
     res.status(400).json({ error: error.message });
