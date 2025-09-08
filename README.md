@@ -1,5 +1,4 @@
 # Timesheet Backend API
-
 A Node.js backend application for managing employee timesheets with MySQL database integration.
 
 ## Tech Stack
