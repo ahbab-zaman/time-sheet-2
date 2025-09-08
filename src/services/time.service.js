@@ -4,23 +4,28 @@ const TimeEntry = db.TimeEntry;
 const Task = db.Task;
 const Employee = db.Employee;
 
-function getWeekRange(date) {
+const getWeekRange = (date) => {
   const inputDate = new Date(date);
   const day = inputDate.getDay();
-  const diffToMonday = (day + 6) % 7;
+  const diffToMonday = (day + 6) % 7; // For Monday start
   const weekStart = new Date(inputDate);
   weekStart.setDate(inputDate.getDate() - diffToMonday);
-  weekStart.setHours(0, 0, 0, 0);
-
   const weekEnd = new Date(weekStart);
   weekEnd.setDate(weekStart.getDate() + 6);
-  weekEnd.setHours(23, 59, 59, 999);
+
+  // Return local strings
+  const formatLocal = (d) => {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const dayStr = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${dayStr}`;
+  };
 
   return {
-    weekStart: weekStart.toISOString().slice(0, 10),
-    weekEnd: weekEnd.toISOString().slice(0, 10),
+    weekStart: formatLocal(weekStart),
+    weekEnd: formatLocal(weekEnd),
   };
-}
+};
 
 exports.clockIn = async (project_id, employee_id, task_id, description) => {
   if (!employee_id || !project_id || !task_id) {
@@ -115,33 +120,42 @@ exports.getActiveEntry = async (employeeId) => {
 };
 
 exports.getTimesheetForWeek = async (employeeId, weekStart, weekEnd) => {
-  const timesheet = await Timesheet.findOne({
+  // Use input strings directly (they are local YYYY-MM-DD)
+  const startDate = weekStart; // e.g., "2025-09-08"
+  const endDate = weekEnd; // e.g., "2025-09-14"
+
+  // Query TimeEntry directly
+  const timeEntries = await TimeEntry.findAll({
     where: {
       employee_id: employeeId,
-      week_start_date: weekStart,
-      week_end_date: weekEnd,
+      date: {
+        [db.Sequelize.Op.between]: [startDate, endDate],
+      },
     },
     include: [
       {
-        model: TimeEntry,
-        as: "entries",
-        include: [
-          {
-            model: Task,
-            as: "task",
-            include: [{ model: db.Project, as: "project" }],
-          },
-        ],
+        model: Task,
+        as: "task",
+        include: [{ model: db.Project, as: "project" }],
       },
     ],
   });
-  console.log("Querying Timesheet with:", {
+
+  // Calculate total hours
+  const total_hours = timeEntries.reduce(
+    (sum, entry) => sum + (parseFloat(entry.hours) || 0),
+    0
+  );
+
+  // Return formatted response
+  return {
     employee_id: employeeId,
-    week_start_date: weekStart,
-    week_end_date: weekEnd,
-  });
-  console.log("Found timesheet:", timesheet);
-  return timesheet || { timeEntries: [], total_hours: 0, status: "draft" };
+    week_start_date: startDate,
+    week_end_date: endDate,
+    timeEntries: timeEntries,
+    total_hours: total_hours.toFixed(2),
+    status: "pending",
+  };
 };
 
 exports.getAllEmployeesTimesheets = async (status) => {
@@ -189,6 +203,7 @@ exports.getAllEmployeesTimesheets = async (status) => {
       ],
       order: [["week_start_date", "DESC"]],
     });
+    console.log("Total time sheets", timesheets);
 
     return timesheets.length
       ? timesheets

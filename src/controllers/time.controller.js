@@ -51,16 +51,18 @@ exports.getTimesheet = async (req, res) => {
       return res.status(400).json({ error: "employee_id is required" });
     }
 
+    let start = week_start;
+    let end = week_end;
     if (!week_start || !week_end) {
       const { weekStart, weekEnd } = getWeekRange(new Date());
-      week_start = week_start || weekStart;
-      week_end = week_end || weekEnd;
+      start = start || weekStart;
+      end = end || weekEnd;
     }
 
     const timesheet = await timeService.getTimesheetForWeek(
       employee_id,
-      week_start,
-      week_end
+      start,
+      end
     );
     res.json(timesheet);
   } catch (error) {

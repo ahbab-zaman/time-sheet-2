@@ -86,7 +86,6 @@ db.Task.belongsTo(db.Project, {
   as: "project",
 });
 
-//new....
 
 // Link timesheets to employees
 db.Employee.hasMany(db.Timesheet, {
