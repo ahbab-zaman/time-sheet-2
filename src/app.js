@@ -57,7 +57,9 @@ const app = express();
 console.log("✅ Express app initialized");
 
 // Allow all origins for simplicity (fixes live CORS issue)
-app.use(cors({ origin: "*", credentials: true }));
+app.use(
+  cors({ origin: "https://airepro-timesheet-f.vercel.app", credentials: true })
+);
 
 // Parse JSON body
 app.use(express.json({ limit: "20mb" }));
